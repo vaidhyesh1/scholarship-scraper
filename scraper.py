@@ -1,13 +1,13 @@
+from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager 
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
+import chromedriver_binary
 import time
 import os
 import certifi
@@ -23,7 +23,17 @@ client = MongoClient(mongo_uri, tlsCAFile=certifi.where())
 db = client[dbName]
 collection = db[collectionName]
 
-options = Options()
+options = webdriver.ChromeOptions()
+
+options.add_argument("--disable-gpu")
+options.add_argument("--disable-infobars")
+options.add_argument("--disable-extensions")
+options.add_argument("--window-size=1024,768")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-features=VizDisplayCompositor")
+options.add_argument('--disable-blink-features=AutomationControlled')
+options.add_argument('--disable-dev-shm-usage')
+
 # TODO: Will make it headless later
 options.add_argument("--headless")
 browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
